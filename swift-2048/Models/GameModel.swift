@@ -9,7 +9,7 @@
 import UIKit
 
 /// A protocol that establishes a way for the game model to communicate with its parent view controller.
-protocol GameModelProtocol : class {
+protocol GameModelProtocol: class {
   func scoreChanged(score: Int)
   func moveOneTile(from: (Int, Int), to: (Int, Int), value: Int)
   func moveTwoTiles(from: ((Int, Int), (Int, Int)), to: (Int, Int), value: Int)
@@ -22,9 +22,9 @@ class GameModel: NSObject {
   let threshold: Int
 
   var score: Int = 0 {
-  didSet {
-    delegate.scoreChanged(score)
-  }
+    didSet {
+      delegate.scoreChanged(score)
+    }
   }
   var gameboard: SquareGameboard<TileObject>
 

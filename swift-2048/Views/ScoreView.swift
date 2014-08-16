@@ -14,10 +14,11 @@ protocol ScoreViewProtocol {
 
 /// A simple view that displays the player's score.
 class ScoreView : UIView, ScoreViewProtocol {
+  
   var score: Int = 0 {
-  didSet {
-    label.text = "SCORE: \(score)"
-  }
+    didSet {
+      label.text = "SCORE: \(score)"
+    }
   }
 
   let defaultFrame = CGRectMake(0, 0, 140, 40)
@@ -27,6 +28,7 @@ class ScoreView : UIView, ScoreViewProtocol {
     label = UILabel(frame: defaultFrame)
     label.textAlignment = NSTextAlignment.Center
     super.init(frame: defaultFrame)
+    
     backgroundColor = bgcolor
     label.textColor = tcolor
     label.font = font
@@ -41,10 +43,4 @@ class ScoreView : UIView, ScoreViewProtocol {
   func scoreChanged(newScore s: Int)  {
     score = s
   }
-}
-
-// A simple view that displays several buttons for controlling the app
-class ControlView {
-  let defaultFrame = CGRectMake(0, 0, 140, 40)
-  // TODO: Implement me
 }
