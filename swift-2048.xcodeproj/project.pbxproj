@@ -100,13 +100,13 @@
 		1AC563DF193DCE6000402286 /* swift-2048 */ = {
 			isa = PBXGroup;
 			children = (
+				1AE339AF193DCE990081FFA4 /* Models */,
+				1AE339B0193DCEAE0081FFA4 /* Views */,
 				ADEBA419199E44CB00D372B9 /* Controllers */,
 				1AC563E2193DCE6000402286 /* AppDelegate.swift */,
 				1AC563E6193DCE6000402286 /* Main.storyboard */,
 				1AC563E9193DCE6000402286 /* Images.xcassets */,
 				1AC563E0193DCE6000402286 /* Supporting Files */,
-				1AE339AF193DCE990081FFA4 /* Models */,
-				1AE339B0193DCEAE0081FFA4 /* Views */,
 			);
 			path = "swift-2048";
 			sourceTree = "<group>";
@@ -401,6 +401,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "swift-2048/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -412,6 +413,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "swift-2048/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

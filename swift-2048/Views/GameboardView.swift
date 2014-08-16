@@ -47,7 +47,7 @@ class GameboardView : UIView {
   }
   /// Reset the gameboard.
   func reset() {
-    for (key, tile) in tiles {
+    for (_, tile) in tiles {
       tile.removeFromSuperview()
     }
     tiles.removeAll(keepCapacity: true)
@@ -217,5 +217,4 @@ class GameboardView : UIView {
           })
       })
   }
-  
 }
