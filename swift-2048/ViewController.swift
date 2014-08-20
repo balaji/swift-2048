@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
   
   @IBAction func startGameButtonTapped(sender : UIButton) {
-    self.presentViewController(NumberTileGameViewController(dimension: 4, threshold: 2048),
+    self.presentViewController(NumberTileGameViewController(),
                               animated: true,
                               completion: nil)
   }

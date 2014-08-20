@@ -27,13 +27,13 @@ class NumberTileGameViewController : UIViewController, GameModelProtocol {
   let viewPadding: CGFloat = 10.0
   let verticalViewOffset: CGFloat = 0.0
 
-  required init(coder aDecoder: NSCoder!) {
+  required init(coder aDecoder: NSCoder) {
     fatalError("NSCoding not supported")
   }
 
-  init(dimension d: Int, threshold t: Int) {
-    dimension = d > 2 ? d : 2
-    threshold = t > 8 ? t : 8
+  override init() {
+    dimension = 4
+    threshold = 2048
     super.init(nibName: nil, bundle: nil)
     gameModel = GameModel(dimension: dimension, threshold: threshold, delegate: self)
     view.backgroundColor = UIColor.whiteColor()

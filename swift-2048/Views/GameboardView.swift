@@ -28,7 +28,11 @@ class GameboardView : UIView {
   let tileMergeContractTime: NSTimeInterval = 0.08
 
   let perSquareSlideDuration: NSTimeInterval = 0.08
-
+  
+  required init(coder: NSCoder) {
+    fatalError("NSCoding not supported")
+  }
+  
   init(dimension d: Int, tileWidth width: CGFloat, tilePadding padding: CGFloat, cornerRadius radius: CGFloat, backgroundColor: UIColor, foregroundColor: UIColor) {
     assert(d > 0)
     dimension = d
@@ -42,9 +46,6 @@ class GameboardView : UIView {
     setupBackground(backgroundColor: backgroundColor, tileColor: foregroundColor)
   }
   
-  required init(coder: NSCoder) {
-      fatalError("NSCoding not supported")
-  }
   /// Reset the gameboard.
   func reset() {
     for (_, tile) in tiles {

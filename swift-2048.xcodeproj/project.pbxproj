@@ -100,12 +100,12 @@
 		1AC563DF193DCE6000402286 /* swift-2048 */ = {
 			isa = PBXGroup;
 			children = (
+				1AC563E6193DCE6000402286 /* Main.storyboard */,
+				1AC563E2193DCE6000402286 /* AppDelegate.swift */,
+				1AC563E9193DCE6000402286 /* Images.xcassets */,
 				1AE339AF193DCE990081FFA4 /* Models */,
 				1AE339B0193DCEAE0081FFA4 /* Views */,
 				ADEBA419199E44CB00D372B9 /* Controllers */,
-				1AC563E2193DCE6000402286 /* AppDelegate.swift */,
-				1AC563E6193DCE6000402286 /* Main.storyboard */,
-				1AC563E9193DCE6000402286 /* Images.xcassets */,
 				1AC563E0193DCE6000402286 /* Supporting Files */,
 			);
 			path = "swift-2048";
@@ -123,8 +123,8 @@
 			isa = PBXGroup;
 			children = (
 				1AC563F5193DCE6000402286 /* swift_2048Tests.swift */,
-				1AC563F3193DCE6000402286 /* Supporting Files */,
 				1AE339B3193DF5FF0081FFA4 /* ModelTests.swift */,
+				1AC563F3193DCE6000402286 /* Supporting Files */,
 			);
 			path = "swift-2048Tests";
 			sourceTree = "<group>";
