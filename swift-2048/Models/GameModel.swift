@@ -20,24 +20,24 @@ protocol GameModelDelegate: class {
 class GameModel: NSObject {
   let dimension: Int
   let threshold: Int
-
+  
   var score: Int = 0 {
     didSet {
       delegate.scoreChanged(score)
     }
   }
   var gameboard: SquareGameboard<TileObject>
-
+  
   // This really should be unowned/weak. But there is currently a bug that causes the app to crash whenever the delegate
   //  is accessed unless the delegate type is a specific class (rather than a protocol).
   let delegate: GameModelDelegate
-
+  
   var queue: [MoveCommand]
   var timer: NSTimer
-
+  
   let maxCommands = 100
   let queueDelay = 0.3
-
+  
   init(dimension d: Int, threshold t: Int, delegate: GameModelDelegate) {
     dimension = d
     threshold = t
@@ -47,7 +47,7 @@ class GameModel: NSObject {
     gameboard = SquareGameboard(dimension: d, initialValue: .Empty)
     super.init()
   }
-
+  
   /// Reset the game state.
   func reset() {
     score = 0
@@ -55,7 +55,7 @@ class GameModel: NSObject {
     queue.removeAll(keepCapacity: true)
     timer.invalidate()
   }
-
+  
   /// Order the game model to perform a move (because the user swiped their finger). The queue enforces a delay of a few
   /// milliseconds between each move.
   func queueMove(direction: MoveDirection, completion: (Bool) -> ()) {
@@ -70,9 +70,9 @@ class GameModel: NSObject {
       timerFired(timer)
     }
   }
-
+  
   //------------------------------------------------------------------------------------------------------------------//
-
+  
   /// Inform the game model that the move delay timer fired. Once the timer fires, the game model tries to execute a
   /// single move that changes the game state.
   func timerFired(timer: NSTimer) {
@@ -100,9 +100,9 @@ class GameModel: NSObject {
         repeats: false)
     }
   }
-
+  
   //------------------------------------------------------------------------------------------------------------------//
-
+  
   /// Insert a tile with a given value at a position upon the gameboard.
   func insertTile(pos: (Int, Int), value: Int) {
     let (x, y) = pos
@@ -114,7 +114,7 @@ class GameModel: NSObject {
       break
     }
   }
-
+  
   /// Insert a tile with a given value at a random open position upon the gameboard.
   func insertTileAtRandomLocation(value: Int) {
     let openSpots = gameboardEmptySpots()
@@ -127,7 +127,7 @@ class GameModel: NSObject {
     let (x, y) = openSpots[idx]
     insertTile((x, y), value: value)
   }
-
+  
   /// Return a list of tuples describing the coordinates of empty spots remaining on the gameboard.
   func gameboardEmptySpots() -> [(Int, Int)] {
     var buffer = Array<(Int, Int)>()
@@ -143,44 +143,44 @@ class GameModel: NSObject {
     }
     return buffer
   }
-
+  
   func gameboardFull() -> Bool {
     return gameboardEmptySpots().count == 0
   }
-
+  
   //------------------------------------------------------------------------------------------------------------------//
   func userHasLost() -> Bool {
     if !gameboardFull() {
       // Player can't lose before filling up the board
       return false
     }
-
-  let tileBelowHasSameValue: ((Int, Int), Int) -> Bool = { (loc: (Int, Int), value: Int) -> Bool in
-    let (x, y) = loc
-    if y == self.dimension-1 {
-      return false
+    
+    let tileBelowHasSameValue: ((Int, Int), Int) -> Bool = { (loc: (Int, Int), value: Int) -> Bool in
+      let (x, y) = loc
+      if y == self.dimension-1 {
+        return false
+      }
+      switch self.gameboard[x, y+1] {
+      case let .Tile(v):
+        return v == value
+      default:
+        return false
+      }
     }
-    switch self.gameboard[x, y+1] {
-    case let .Tile(v):
-      return v == value
-    default:
-      return false
+    
+    let tileToRightHasSameValue: ((Int, Int), Int) -> Bool = { (loc: (Int, Int), value: Int) -> Bool in
+      let (x, y) = loc
+      if x == self.dimension-1 {
+        return false
+      }
+      switch self.gameboard[x+1, y] {
+      case let .Tile(v):
+        return v == value
+      default:
+        return false
+      }
     }
-  }
-  
-  let tileToRightHasSameValue: ((Int, Int), Int) -> Bool = { (loc: (Int, Int), value: Int) -> Bool in
-    let (x, y) = loc
-    if x == self.dimension-1 {
-      return false
-    }
-    switch self.gameboard[x+1, y] {
-    case let .Tile(v):
-      return v == value
-    default:
-      return false
-    }
-  }
-
+    
     // Run through all the tiles and check for possible moves
     for i in 0..<dimension {
       for j in 0..<dimension {
@@ -196,7 +196,7 @@ class GameModel: NSObject {
     }
     return true
   }
-
+  
   func userHasWon() -> (Bool, (Int, Int)?) {
     for i in 0..<dimension {
       for j in 0..<dimension {
@@ -211,9 +211,9 @@ class GameModel: NSObject {
     }
     return (false, nil)
   }
-
+  
   //------------------------------------------------------------------------------------------------------------------//
-
+  
   // Perform all calculations and update state for a single move.
   func performMove(direction: MoveDirection) -> Bool {
     // Prepare the generator closure. This closure differs in behavior depending on the direction of the move. It is
@@ -231,22 +231,22 @@ class GameModel: NSObject {
       }
       return buffer
     }
-
+    
     var atLeastOneMove = false
     for i in 0..<dimension {
       // Get the list of coords
       let coords = coordinateGenerator(i)
-
+      
       // Get the corresponding list of tiles
       let tiles = coords.map() { (c: (Int, Int)) -> TileObject in
         let (x, y) = c
         return self.gameboard[x, y]
       }
-
+      
       // Perform the operation
       let orders = merge(tiles)
       atLeastOneMove = orders.count > 0 ? true : atLeastOneMove
-
+      
       // Write back the results
       for object in orders {
         switch object {
@@ -275,9 +275,9 @@ class GameModel: NSObject {
     }
     return atLeastOneMove
   }
-
+  
   //------------------------------------------------------------------------------------------------------------------//
-
+  
   /// When computing the effects of a move upon a row of tiles, calculate and return a list of ActionTokens
   /// corresponding to any moves necessary to remove interstital space. For example, |[2][ ][ ][4]| will become
   /// |[2][4]|.
@@ -296,7 +296,7 @@ class GameModel: NSObject {
     }
     return tokenBuffer;
   }
-
+  
   /// When computing the effects of a move upon a row of tiles, calculate and return an updated list of ActionTokens
   /// corresponding to any merges that should take place. This method collapses adjacent tiles of equal value, but each
   /// tile can take part in at most one collapse per move. For example, |[1][1][1][2][2]| will become |[2][1][4]|.
@@ -305,7 +305,7 @@ class GameModel: NSObject {
       // Return whether or not a 'NoAction' token still represents an unmoved tile
       return (inputPosition == outputLength) && (originalPosition == inputPosition)
     }
-
+    
     var tokenBuffer = [ActionToken]()
     var skipNext = false
     for (idx, token) in enumerate(group) {
@@ -353,7 +353,7 @@ class GameModel: NSObject {
     }
     return tokenBuffer
   }
-
+  
   /// When computing the effects of a move upon a row of tiles, take a list of ActionTokens prepared by the condense()
   /// and convert() methods and convert them into MoveOrders that can be fed back to the delegate.
   func convert(group: [ActionToken]) -> [MoveOrder] {
@@ -373,7 +373,7 @@ class GameModel: NSObject {
     }
     return moveBuffer
   }
-
+  
   /// Given an array of TileObjects, perform a collapse and create an array of move orders.
   func merge(group: [TileObject]) -> [MoveOrder] {
     // Calculation takes place in three steps:

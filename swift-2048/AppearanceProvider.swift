@@ -15,7 +15,7 @@ protocol AppearanceProviderProtocol: class {
 }
 
 class AppearanceProvider: AppearanceProviderProtocol {
-
+  
   // Provide a tile color for a given value
   func tileColor(value: Int) -> UIColor {
     switch value {
@@ -37,7 +37,7 @@ class AppearanceProvider: AppearanceProviderProtocol {
       return UIColor.whiteColor()
     }
   }
-
+  
   // Provide a numeral color for a given value
   func numberColor(value: Int) -> UIColor {
     switch value {
@@ -47,7 +47,7 @@ class AppearanceProvider: AppearanceProviderProtocol {
       return UIColor.whiteColor()
     }
   }
-
+  
   // Provide the font to be used on the number tiles
   func fontForNumbers() -> UIFont {
     return UIFont(name: "HelveticaNeue-Bold", size: 20)

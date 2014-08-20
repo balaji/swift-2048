@@ -46,7 +46,7 @@ enum ActionToken {
   case Move(source: Int, value: Int)
   case SingleCombine(source: Int, value: Int)
   case DoubleCombine(source: Int, second: Int, value: Int)
-
+  
   // Get the 'value', regardless of the specific type
   func getValue() -> Int {
     switch self {
@@ -72,12 +72,12 @@ enum ActionToken {
 struct SquareGameboard<T> {
   let dimension: Int
   var boardArray: [T]
-
+  
   init(dimension d: Int, initialValue: T) {
     dimension = d
     boardArray = [T](count:d*d, repeatedValue:initialValue)
   }
-
+  
   subscript(row: Int, col: Int) -> T {
     get {
       assert(row >= 0 && row < dimension)
@@ -90,7 +90,7 @@ struct SquareGameboard<T> {
       boardArray[row*dimension + col] = newValue
     }
   }
-
+  
   // We mark this function as 'mutating' since it changes its 'parent' struct.
   mutating func setAll(item: T) {
     for i in 0..<dimension {

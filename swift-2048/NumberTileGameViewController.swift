@@ -13,10 +13,10 @@ import UIKit
 /// orders calculated by the model are returned to the view controller and forwarded to the gameboard view, which
 /// performs any animations to update its state.
 class NumberTileGameViewController : UIViewController, GameModelDelegate {
-
+  
   var dimension: Int
   var threshold: Int
-
+  
   var gameBoardView: GameboardView?
   var gameModel: GameModel?
   var scoreBoardView: ScoreViewProtocol?
@@ -26,11 +26,11 @@ class NumberTileGameViewController : UIViewController, GameModelDelegate {
   let thickPadding: CGFloat = 6.0
   let viewPadding: CGFloat = 10.0
   let verticalViewOffset: CGFloat = 0.0
-
+  
   required init(coder aDecoder: NSCoder) {
     fatalError("NSCoding not supported")
   }
-
+  
   override init() {
     dimension = 4
     threshold = 2048
@@ -91,7 +91,7 @@ class NumberTileGameViewController : UIViewController, GameModelDelegate {
       // Now, insert more tiles
       let randomVal = Int(arc4random_uniform(10))
       gameModel!.insertTileAtRandomLocation(randomVal == 1 ? 4 : 2)
-    
+      
       // At this point, the user may lose
       if gameModel!.userHasLost() {
         // TODO: alert delegate we lost
@@ -99,13 +99,13 @@ class NumberTileGameViewController : UIViewController, GameModelDelegate {
       }
     }
   }
-
+  
   // View Controller
   override func viewDidLoad()  {
     super.viewDidLoad()
     setupGame()
   }
-
+  
   func setupGame() {
     // This nested function provides the x-position for a component view
     func xPositionToCenterView(v: UIView) -> CGFloat {
@@ -121,12 +121,12 @@ class NumberTileGameViewController : UIViewController, GameModelDelegate {
       let top = 0.5 * (view.bounds.size.height - totalHeight)
       return (top >= 0 ? top : 0) + views[0..<order].map{ $0.bounds.size.height }.reduce(0.0) {  $0 + $1 + self.viewPadding }
     }
-
+    
     // Create the score view
     let scoreBoard = ScoreView(backgroundColor: UIColor.blackColor(),
-                              textColor: UIColor.whiteColor(),
-                              font: UIFont(name: "HelveticaNeue-Bold", size: 16.0),
-                              radius: 6)
+      textColor: UIColor.whiteColor(),
+      font: UIFont(name: "HelveticaNeue-Bold", size: 16.0),
+      radius: 6)
     scoreBoard.score = 0 //TODO:sets the label.
     
     // Create the gameboard
@@ -134,15 +134,15 @@ class NumberTileGameViewController : UIViewController, GameModelDelegate {
     let v1 = boardWidth - padding * CGFloat(dimension + 1)
     let width: CGFloat = CGFloat(floorf(CFloat(v1)))/CGFloat(dimension)
     let gameBoard = GameboardView(dimension: dimension,
-                                  tileWidth: width,
-                                  tilePadding: padding,
-                                  cornerRadius: 6,
-                                  backgroundColor: UIColor.blackColor(),
-                                  foregroundColor: UIColor.darkGrayColor())
-
+      tileWidth: width,
+      tilePadding: padding,
+      cornerRadius: 6,
+      backgroundColor: UIColor.blackColor(),
+      foregroundColor: UIColor.darkGrayColor())
+    
     // Set up the frames
     let views = [scoreBoard, gameBoard]
-
+    
     scoreBoard.frame.origin = CGPoint(x: xPositionToCenterView(scoreBoard), y: yPositionForViewAtPosition(0, views))
     gameBoard.frame.origin = CGPoint(x: xPositionToCenterView(gameBoard), y: yPositionForViewAtPosition(1, views))
     self.gameBoardView = gameBoard
@@ -151,28 +151,28 @@ class NumberTileGameViewController : UIViewController, GameModelDelegate {
     // Add to game state
     view.addSubview(gameBoard)
     view.addSubview(scoreBoard)
-
+    
     assert(gameModel != nil)
     for _ in (1...2) { gameModel!.insertTileAtRandomLocation(2) }
   }
-
+  
   // Protocol
   func scoreChanged(score: Int) {
     if let s = scoreBoardView {
       s.scoreChanged(newScore: score)
     }
   }
-
+  
   func moveOneTile(from: (Int, Int), to: (Int, Int), value: Int) {
     assert(gameBoardView != nil)
     gameBoardView!.moveOneTile(from, to: to, value: value)
   }
-
+  
   func moveTwoTiles(from: ((Int, Int), (Int, Int)), to: (Int, Int), value: Int) {
     assert(gameBoardView != nil)
     gameBoardView!.moveTwoTiles(from, to: to, value: value)
   }
-
+  
   func insertTile(location: (Int, Int), value: Int) {
     assert(gameBoardView != nil)
     gameBoardView!.insertTile(location, value: value)

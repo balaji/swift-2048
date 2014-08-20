@@ -9,25 +9,25 @@
 import XCTest
 
 class ModelTests: XCTestCase, GameModelDelegate {
-
+  
   override func setUp() {
     super.setUp()
     // Put setup code here. This method is called before the invocation of each test method in the class.
   }
-    
+  
   override func tearDown() {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     super.tearDown()
   }
-
+  
   // Would be better to just make the merge and associated methods static.
   func scoreChanged(score: Int) { }
   func moveOneTile(from: (Int, Int), to: (Int, Int), value: Int) { }
   func moveTwoTiles(from: ((Int, Int), (Int, Int)), to: (Int, Int), value: Int) { }
   func insertTile(location: (Int, Int), value: Int) { }
-
+  
   // --------- TEST CONDENSE --------- //
-
+  
   func testCondense1() {
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
     var group = [TileObject.Tile(1),
@@ -37,7 +37,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       TileObject.Tile(1)]
     XCTAssert(group.count == 5, "Group should have 5 members before anything happens")
     let output = m.condense(group)
-
+    
     // Check the output
     XCTAssert(output.count == 5, "Output should have 5 merge tiles")
     for (idx, object) in enumerate(output) {
@@ -57,7 +57,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testCondense1b() {
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
     var group = [TileObject.Tile(1),
@@ -67,7 +67,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       TileObject.Tile(1)]
     XCTAssert(group.count == 5, "Group should have 5 members before anything happens")
     let output = m.condense(group)
-
+    
     // Check the output
     XCTAssert(output.count == 3, "Output should have 3 merge tiles")
     for (idx, object) in enumerate(output) {
@@ -103,7 +103,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testCondense1c() {
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
     var group = [TileObject.Tile(1),
@@ -114,7 +114,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       TileObject.Empty]
     XCTAssert(group.count == 6, "Group should have 6 members before anything happens")
     let output = m.condense(group)
-
+    
     // Check the output
     XCTAssert(output.count == 3, "Output should have 3 merge tiles")
     for (idx, object) in enumerate(output) {
@@ -150,7 +150,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testCondense1d() {
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
     var group = [TileObject.Empty,
@@ -163,7 +163,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       TileObject.Empty]
     XCTAssert(group.count == 8, "Group should have 8 members before anything happens")
     let output = m.condense(group)
-
+    
     // Check the output
     XCTAssert(output.count == 3, "Output should have 3 merge tiles")
     for (idx, object) in enumerate(output) {
@@ -191,7 +191,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testCondense4() {
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
     let group = [TileObject.Tile(2),
@@ -202,9 +202,9 @@ class ModelTests: XCTestCase, GameModelDelegate {
     let output = m.condense(group)
     XCTAssert(output.count == 4, "Output had \(output.count) merge tiles, should have had 4")
   }
-
+  
   // --------- TEST COLLAPSE --------- //
-
+  
   func testCollapse1() {
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
     var group = [ActionToken.NoAction(source: 0, value: 4),
@@ -214,13 +214,13 @@ class ModelTests: XCTestCase, GameModelDelegate {
     let output = m.collapse(group)
     XCTAssert(output.count == 4, "Output should have had 4 items, but had \(output.count) items")
   }
-
+  
   // --------- TEST CONVERT --------- //
-
+  
   // (nothing for now)
-
+  
   // --------- TEST MERGE --------- //
-
+  
   func testMerge1() {
     // Scenario: no movement at all
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
@@ -233,7 +233,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
     let orders = m.merge(group)
     XCTAssert(orders.count == 0, "No move orders should have happened, but output had \(orders.count) items")
   }
-
+  
   func testMerge2() {
     // Scenario: some moves
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
@@ -266,7 +266,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testMerge3() {
     // Scenario: no moves, one merge at end
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
@@ -294,7 +294,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testMerge4() {
     // Scenario: one move, one merge
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
@@ -332,7 +332,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testMerge5() {
     // Scenario: multi-merge with 3 equal tiles involved
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
@@ -365,7 +365,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testMerge6() {
     // Scenario: multiple merges
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
@@ -406,7 +406,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testMerge7() {
     // Scenario: multiple spaces and merges
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
@@ -441,7 +441,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testMerge8() {
     // Scenario: multiple spaces and merges
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
@@ -477,7 +477,7 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
   func testMerge9() {
     // Scenario: multiple moves with leading space
     let m = GameModel(dimension: 5, threshold: 2048, delegate: self)
@@ -510,5 +510,5 @@ class ModelTests: XCTestCase, GameModelDelegate {
       }
     }
   }
-
+  
 }

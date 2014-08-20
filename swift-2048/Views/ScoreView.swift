@@ -20,10 +20,10 @@ class ScoreView : UIView, ScoreViewProtocol {
       label.text = "SCORE: \(score)"
     }
   }
-
+  
   let defaultFrame = CGRectMake(0, 0, 140, 40)
   var label: UILabel
-
+  
   init(backgroundColor bgcolor: UIColor, textColor tcolor: UIColor, font: UIFont, radius r: CGFloat) {
     label = UILabel(frame: defaultFrame)
     label.textAlignment = NSTextAlignment.Center
@@ -35,7 +35,7 @@ class ScoreView : UIView, ScoreViewProtocol {
     layer.cornerRadius = r
     self.addSubview(label)
   }
-    
+  
   required init(coder aDecoder: NSCoder) {
     fatalError("NSCoding not supported")
   }

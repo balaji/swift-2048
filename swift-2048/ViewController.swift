@@ -12,8 +12,8 @@ class ViewController: UIViewController {
   
   @IBAction func startGameButtonTapped(sender : UIButton) {
     self.presentViewController(NumberTileGameViewController(),
-                              animated: true,
-                              completion: nil)
+      animated: true,
+      completion: nil)
   }
 }
 
