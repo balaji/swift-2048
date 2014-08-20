@@ -9,7 +9,7 @@
 import UIKit
 
 /// A protocol that establishes a way for the game model to communicate with its parent view controller.
-protocol GameModelProtocol: class {
+protocol GameModelDelegate: class {
   func scoreChanged(score: Int)
   func moveOneTile(from: (Int, Int), to: (Int, Int), value: Int)
   func moveTwoTiles(from: ((Int, Int), (Int, Int)), to: (Int, Int), value: Int)
@@ -30,7 +30,7 @@ class GameModel: NSObject {
 
   // This really should be unowned/weak. But there is currently a bug that causes the app to crash whenever the delegate
   //  is accessed unless the delegate type is a specific class (rather than a protocol).
-  let delegate: GameModelProtocol
+  let delegate: GameModelDelegate
 
   var queue: [MoveCommand]
   var timer: NSTimer
@@ -38,7 +38,7 @@ class GameModel: NSObject {
   let maxCommands = 100
   let queueDelay = 0.3
 
-  init(dimension d: Int, threshold t: Int, delegate: GameModelProtocol) {
+  init(dimension d: Int, threshold t: Int, delegate: GameModelDelegate) {
     dimension = d
     threshold = t
     self.delegate = delegate
@@ -297,16 +297,18 @@ class GameModel: NSObject {
     }
     return tokenBuffer;
   }
-    
-  func quiescentTileStillQuiescent(inputPosition: Int, _ outputLength: Int, _ originalPosition: Int) -> Bool {
-    // Return whether or not a 'NoAction' token still represents an unmoved tile
-    return (inputPosition == outputLength) && (originalPosition == inputPosition)
-  }
+
     
   /// When computing the effects of a move upon a row of tiles, calculate and return an updated list of ActionTokens
   /// corresponding to any merges that should take place. This method collapses adjacent tiles of equal value, but each
   /// tile can take part in at most one collapse per move. For example, |[1][1][1][2][2]| will become |[2][1][4]|.
   func collapse(group: [ActionToken]) -> [ActionToken] {
+    
+    let quiescentTileStillQuiescent: (Int, Int, Int) -> Bool = { (inputPosition: Int, outputLength: Int, originalPosition: Int) -> Bool in
+      // Return whether or not a 'NoAction' token still represents an unmoved tile
+      return (inputPosition == outputLength) && (originalPosition == inputPosition)
+    }
+    
     var tokenBuffer = [ActionToken]()
     var skipNext = false
     for (idx, token) in enumerate(group) {

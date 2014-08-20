@@ -8,7 +8,7 @@
 
 import XCTest
 
-class ModelTests: XCTestCase, GameModelProtocol {
+class ModelTests: XCTestCase, GameModelDelegate {
 
   override func setUp() {
     super.setUp()

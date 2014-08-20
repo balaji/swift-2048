@@ -12,14 +12,14 @@ import UIKit
 /// together. Data flow works as follows: user input reaches the view controller and is forwarded to the model. Move
 /// orders calculated by the model are returned to the view controller and forwarded to the gameboard view, which
 /// performs any animations to update its state.
-class NumberTileGameViewController : UIViewController, GameModelProtocol {
+class NumberTileGameViewController : UIViewController, GameModelDelegate {
 
   var dimension: Int
   var threshold: Int
 
-  var gameBoard: GameboardView?
+  var gameBoardView: GameboardView?
   var gameModel: GameModel?
-  var scoreBoard: ScoreViewProtocol?
+  var scoreBoardView: ScoreViewProtocol?
   
   let boardWidth: CGFloat = 230.0
   let thinPadding: CGFloat = 3.0
@@ -145,8 +145,8 @@ class NumberTileGameViewController : UIViewController, GameModelProtocol {
 
     scoreBoard.frame.origin = CGPoint(x: xPositionToCenterView(scoreBoard), y: yPositionForViewAtPosition(0, views))
     gameBoard.frame.origin = CGPoint(x: xPositionToCenterView(gameBoard), y: yPositionForViewAtPosition(1, views))
-    self.gameBoard = gameBoard
-    self.scoreBoard = scoreBoard
+    self.gameBoardView = gameBoard
+    self.scoreBoardView = scoreBoard
     
     // Add to game state
     view.addSubview(gameBoard)
@@ -158,23 +158,23 @@ class NumberTileGameViewController : UIViewController, GameModelProtocol {
 
   // Protocol
   func scoreChanged(score: Int) {
-    if let s = scoreBoard {
+    if let s = scoreBoardView {
       s.scoreChanged(newScore: score)
     }
   }
 
   func moveOneTile(from: (Int, Int), to: (Int, Int), value: Int) {
-    assert(gameBoard != nil)
-    gameBoard!.moveOneTile(from, to: to, value: value)
+    assert(gameBoardView != nil)
+    gameBoardView!.moveOneTile(from, to: to, value: value)
   }
 
   func moveTwoTiles(from: ((Int, Int), (Int, Int)), to: (Int, Int), value: Int) {
-    assert(gameBoard != nil)
-    gameBoard!.moveTwoTiles(from, to: to, value: value)
+    assert(gameBoardView != nil)
+    gameBoardView!.moveTwoTiles(from, to: to, value: value)
   }
 
   func insertTile(location: (Int, Int), value: Int) {
-    assert(gameBoard != nil)
-    gameBoard!.insertTile(location, value: value)
+    assert(gameBoardView != nil)
+    gameBoardView!.insertTile(location, value: value)
   }
 }
